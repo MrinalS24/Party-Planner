@@ -1,35 +1,60 @@
 import tkinter as tk
 from tkinter import ttk
+from budgeting import budgeting_window
+from menu import menu_window
+from check_list import checklist_window
 
 
 
 total_people = 0
 guest_list = {}
+
 status_var = None
 name_entry = None
 no_people_spinbox = None
 guest_listbox = None
+total_people_label = None
+
+no_people = 0
 
 
 
 
 def add_people():
-    global status_var, name_entry, no_people_spinbox, total_people, guest_list, guest_listbox, no_people_var
+    global status_var, name_entry, no_people_spinbox, total_people, guest_list, guest_listbox, no_people_var, total_people_label, no_people
 
     name = name_entry.get()
     rsvp_status = status_var.get()
     no_people = no_people_var.get()
 
+    if name not in guest_list:
+        guest_listbox.insert(tk.END, name)
+    
+
     guest_list[name] = [rsvp_status, no_people]
     print(guest_list)
-
-    guest_listbox.insert(tk.END, name)
 
     name_entry.delete(0, tk.END)
     no_people_var.set(1)
 
+    total_people += no_people
+    total_people_label.config(text = f"Total No. of People: {total_people}")
+
+    
 
 
+def delete_people():
+    global no_people_spinbox, guest_list, total_people, total_people_label, guest_listbox, no_people
+
+    selected_index = guest_listbox.curselection()
+    guest_listbox.delete(selected_index)
+    
+    total_people -= no_people
+    total_people_label.config(text = f"Total No. of People: {total_people}")
+
+
+def update_people():
+    global guest_list, guest_listbox, total_people, total_people_label
 
 
 
@@ -46,14 +71,14 @@ def add_people():
 
 
 def guest_window():
-    global status_var, name_entry, no_people_spinbox, total_people, guest_listbox
+    global status_var, name_entry, no_people_spinbox, total_people, guest_listbox, total_people_label
 
     guest_window = tk.Toplevel(window)
     guest_window.title("Guest List Window")
     guest_window.geometry("500x500")
     guest_window.config(bg = "#FDFD96")
 
-    guest_listbox = tk.Listbox(guest_window, width = 30, height = 20, font = ("Times New Roman", 15), fg = "black", bg = "white", )
+    guest_listbox = tk.Listbox(guest_window, width = 30, height = 20, font = ("Times New Roman", 15), fg = "black", bg = "white")
     guest_listbox.place(x = 20, y = 20)
 
     name_label = tk.Label(guest_window, text = "Enter Guest Name:", fg = "black", bg = "#FDFD96", font = ("Times New Roman", 18))
@@ -88,7 +113,7 @@ def guest_window():
     update_button = tk.Button(guest_window, text = "Update", fg = "black", bg = "white", bd = 4, relief = tk.GROOVE, font = ("Times New Roman", 18))
     update_button.place(x = 380, y = 360)
 
-    delete_button = tk.Button(guest_window, text = "Delete", fg = "black", bg = "white", bd = 4, relief = tk.GROOVE, font = ("Times New Roman", 18))
+    delete_button = tk.Button(guest_window, text = "Delete", fg = "black", bg = "white", bd = 4, relief = tk.GROOVE, font = ("Times New Roman", 18), command = delete_people)
     delete_button.place(x = 330, y = 410)
 
     total_people_label = tk.Label(guest_window, text = f"Total No. of People: {total_people}", fg = "black", bg = "#FDFD96", bd = 2, relief = tk.SUNKEN, font = ("Times New Roman", 20), width = 22)
@@ -121,16 +146,17 @@ planner_label.place(x = 230, y = 230)
 guest_list_button = tk.Button(window, text = "GUEST LIST", fg = "black", bg = "white", font = ("Times New Roman", 20), command = guest_window)
 guest_list_button.place(x = 235, y = 80)
 
-checklist_button = tk.Button(window, text = "CHECKLIST", fg = "black", bg = "white", font = ("Times New Roman", 20))
+checklist_button = tk.Button(window, text = "CHECKLIST", fg = "black", bg = "white", font = ("Times New Roman", 20), command = checklist_window)
 checklist_button.place(x = 230, y = 380)
 
-budget_button = tk.Button(window, text = "BUDGETING", fg = "black", bg = "white", font = ("Times New Roman", 20))
+budget_button = tk.Button(window, text = "BUDGETING", fg = "black", bg = "white", font = ("Times New Roman", 20), command = budgeting_window)
 budget_button.place(x = 15, y = 230)
 
-food_button = tk.Button(window, text = "FOOD", fg = "black", bg = "white", font = ("Times New Roman", 20))
+food_button = tk.Button(window, text = "MENU", fg = "black", bg = "white", font = ("Times New Roman", 20), command = menu_window)
 food_button.place(x = 480, y = 230)
 
 
 
 
 window.mainloop()
+
