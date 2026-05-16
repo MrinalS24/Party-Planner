@@ -2,20 +2,44 @@ import tkinter as tk
 from tkinter import ttk
 
 
+food_listbox = None
 
 food_entry = None
 food_type_var = None
 v_nv_type_var = None
 
+food_list = []
+
 
 
 
 def add_food_item():
-    global food_entry, food_type_var, v_nv_type_var
+    global food_entry, food_type_var, v_nv_type_var, food_listbox
 
     food_name = food_entry.get()
     food_type = food_type_var.get()
-    v_nv = v_nv_type_var
+    v_nv = v_nv_type_var.get()
+
+    food_enter_lisbox = (food_name, food_type, v_nv)
+
+    food_list.append(food_enter_lisbox)
+
+    final_of_food_list = len(food_list) -1
+
+    food_listbox.insert(tk.END, food_list[final_of_food_list])
+
+
+
+def remove_food_item():
+    global food_entry, food_type_var, v_nv_type_var, food_listbox
+
+    index = food_listbox.curselection()
+
+    del food_list[index[0]]
+
+    food_listbox.delete(index)
+
+
 
 
 
@@ -26,7 +50,7 @@ def add_food_item():
 
 
 def menu_window():
-    global food_entry, food_type_var, v_nv_type_var
+    global food_entry, food_type_var, v_nv_type_var, food_listbox, food_list
 
     menu_window = tk.Tk()
     menu_window.title("Menu WIndow")
@@ -36,6 +60,9 @@ def menu_window():
 
     food_listbox = tk.Listbox(menu_window, width = 30, height = 20, font = ("Times New Roman", 15), fg = "black", bg = "white")
     food_listbox.place(x = 20, y = 20)
+
+    for i in food_list:
+        food_listbox.insert(tk.END, i)
 
     food_label = tk.Label(menu_window, text = "Enter Food Item:", bg = "#ACE1AF", fg = "black", font = ("Times New Roman", 18))
     food_label.place(x = 270, y = 30)
@@ -65,10 +92,10 @@ def menu_window():
     non_veg_button = tk.Radiobutton(menu_window, text = "Non-Veg", variable = v_nv_type_var, value = "Non-Veg", bg = "#ACE1AF", fg = "black", font = ("Times New Roman", 18))
     non_veg_button.place(x = 270, y = 280)
 
-    add_button = tk.Button(menu_window, text = "Add Food Item", bg = "white", fg = "black", bd = 4, relief = tk.SUNKEN, font = ("Times New Roman", 18))
+    add_button = tk.Button(menu_window, text = "Add Food Item", bg = "white", fg = "black", bd = 4, relief = tk.SUNKEN, font = ("Times New Roman", 18), command = add_food_item)
     add_button.place(x = 270, y = 350)
 
-    remove_button = tk.Button(menu_window, text = "Remove Food Item", bg = "white", fg = "black", bd = 4, relief = tk.SUNKEN, font = ("Times New Roman", 18))
+    remove_button = tk.Button(menu_window, text = "Remove Food Item", bg = "white", fg = "black", bd = 4, relief = tk.SUNKEN, font = ("Times New Roman", 18), command = remove_food_item)
     remove_button.place(x = 270, y = 400)
 
     
