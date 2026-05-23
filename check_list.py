@@ -51,7 +51,7 @@ def change_task_status(event):
 def checklist_window():
     global to_do_listbox, done_listbox, task_enter_button, task_entry, tasks_list, done_tasks_list
 
-    checklist_window = tk.Tk()
+    checklist_window = tk.Toplevel()
     checklist_window.geometry("500x500")
     checklist_window.config(bg = "#D1C1F2")
     checklist_window.title("Checklist Window")
@@ -69,7 +69,7 @@ def checklist_window():
     done_listbox.place(x = 280, y = 20)
 
     for i in done_tasks_list:
-        done_tasks_list.insert(tk.END, i)
+        done_listbox.insert(tk.END, i)
 
     to_do_label = tk.Label(checklist_window, text = "Still To-Do", bg = "#D1C1F2", fg = "black", font = ("Times New Roman", 18))
     to_do_label.place(x = 100, y = 300)
