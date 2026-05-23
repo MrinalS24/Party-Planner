@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from budgeting import budgeting_window
-from menu import menu_window
+from menu import open_menu_window
 from check_list import checklist_window
+
 
 
 
@@ -18,6 +19,17 @@ guest_window = None
 
 no_people = 0
 
+
+
+food_listbox = None
+
+food_entry = None
+food_type_var = None
+v_nv_type_var = None
+veg_button = None
+non_veg_button = None
+
+food_list = []
 
 
 
@@ -51,9 +63,12 @@ def delete_people():
     global no_people_spinbox, guest_list, total_people, total_people_label, guest_listbox, no_people
 
     selected_index = guest_listbox.curselection()
+    name = guest_listbox.get(selected_index[0])
+
     guest_listbox.delete(selected_index)
+    del guest_list[name]
     
-    total_people -= no_people
+    total_people -= no_people   
     total_people_label.config(text = f"Total No. of People: {total_people}")
 
 
@@ -80,15 +95,6 @@ def show_details(event):
     status_label.place(x = 5, y = 55)
 
     show_details_window.mainloop()
-
-
-
-
-
-
-
-
-
 
 
 
@@ -147,53 +153,4 @@ def open_guest_window():
     total_people_label.place(x = 28, y = 420)
 
 
-
-
-
-
-
-
-    
-
-
-
-
-
-window = tk.Tk()
-window.geometry("600x500")
-window.config(bg = "#ffd1f4")
-window.title("Party Planner")
-
-no_people_var = tk.IntVar(value = 1)
-
-streamer_img = tk.PhotoImage(file = "streamers.png") #loading images
-money_img = tk.PhotoImage(file = "money.png")
-
-streamer_img_label = tk.Label(window, image = streamer_img, bg = "#ffd1f4")
-streamer_img_label.pack()
-
-
-
-
-planner_label = tk.Label(window, text = "PARTY PLANNER", fg = "black", bg = "#ffd1f4", font = ("Times New Roman", 20))
-planner_label.place(x = 230, y = 230)
-
-guest_list_button = tk.Button(window, text = "GUEST LIST", fg = "black", bg = "white", font = ("Times New Roman", 20), command = open_guest_window)
-guest_list_button.place(x = 235, y = 80)
-
-checklist_button = tk.Button(window, text = "CHECKLIST", fg = "black", bg = "white", font = ("Times New Roman", 20), command = checklist_window)
-checklist_button.place(x = 230, y = 380)
-
-budget_button = tk.Button(window, text = "BUDGETING", fg = "black", bg = "white", font = ("Times New Roman", 20), command = budgeting_window)
-budget_button.place(x = 15, y = 230)
-
-food_button = tk.Button(window, text = "MENU", fg = "black", bg = "white", font = ("Times New Roman", 20), command = menu_window)
-food_button.place(x = 480, y = 230)
-
-# to add an image in a button, add a property "image" and put in the image variable as loaded onto the file. 
-
-
-
-
-window.mainloop()
 
